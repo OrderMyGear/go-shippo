@@ -13,7 +13,7 @@ type Rate struct {
 	ProviderImage200 string           `json:"provider_image_200"`
 	ServiceLevel     *ServiceLevel    `json:"servicelevel"`
 	EstimatedDays    int              `json:"estimated_days"`
-	ArrivesBy        int              `json:"arrives_by"`
+	ArrivesBy        string           `json:"arrives_by"`
 	DurationTerms    string           `json:"duration_terms"`
 	CarrierAccount   string           `json:"carrier_account"`
 	Zone             string           `json:"zone"`
