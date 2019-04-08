@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/coldbrewcloud/go-shippo/errors"
 	"github.com/coldbrewcloud/go-shippo/models"
@@ -118,8 +117,8 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 				body = string(reqBodyDebug)
 			}
 
-			c.logPrintf("Client.createRequest() HTTP request created: method=%q, url=%q, headers=%q, body=%q",
-				req.Method, req.URL.String(), strings.Join(headers, ","), body)
+			c.logPrintf("Client.createRequest() HTTP request created: method=%q, url=%q, body=%q",
+				req.Method, req.URL.String(), body)
 		}()
 	}
 
