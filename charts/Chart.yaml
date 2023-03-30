@@ -1,0 +1,25 @@
+apiVersion: v2
+name: go-shippo
+description: A Helm chart for go-shippo
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+dependencies:
+- name: common
+  version: 0.2.2
+  repository: oci://us-docker.pkg.dev/omg-img/helm-repository
+- name: stage-values
+  version: 0.2.1
+  repository: oci://us-docker.pkg.dev/omg-img/helm-repository
+  import-values:
+  - exportValues
+  tags:
+  - stage
+- name: production-values
+  version: 0.2.1
+  repository: oci://us-docker.pkg.dev/omg-img/helm-repository
+  import-values:
+  - exportValues
+  tags:
+  - production
+

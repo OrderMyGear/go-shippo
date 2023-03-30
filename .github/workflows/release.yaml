@@ -1,0 +1,14 @@
+name: Release
+on:
+    pull_request:
+      types:
+        - closed
+      branches:
+        - master
+
+jobs:
+  tag_release:
+    name: Tag And Create Release
+    if: github.event.pull_request.merged == true
+    uses: OrderMyGear/charts/.github/workflows/release.yml@master
+    secrets: inherit

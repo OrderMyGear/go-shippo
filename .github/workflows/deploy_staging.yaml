@@ -1,0 +1,35 @@
+name: Deploy Staging
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: The namespace to deploy to
+        required: true
+        type: choice
+        options:
+          - colibries
+          - gophers
+          - lions
+          - lions-qe
+          - llamas
+          - nautilus
+          - panthers
+          - panthers-qe
+          - toros
+          - toros-qe
+  workflow_call:
+      inputs:
+        environment:
+          description: The namespace to deploy to
+          type: string
+          required: true
+
+jobs:
+  deploy:
+    name: Deploy Staging
+    uses: OrderMyGear/charts/.github/workflows/deploy.yml@master
+    with:
+      namespace: ${{ inputs.environment }}
+      values_file: charts/values-stage.yaml
+      environment: staging

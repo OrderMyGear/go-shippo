@@ -1,0 +1,24 @@
+name: Build And Deploy Production
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    name: Build
+    uses: OrderMyGear/charts/.github/workflows/build_ui.yml@master
+    with:
+      environment: staging
+
+  deploy:
+    name: Deploy Production
+    needs: [build]
+    uses: OrderMyGear/charts/.github/workflows/deploy.yml@master
+    with:
+      namespace: general
+      values_file: charts/values-production.yaml
+      environment: production
