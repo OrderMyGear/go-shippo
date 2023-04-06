@@ -1,0 +1,12 @@
+name: Deploy Production
+
+on: [workflow_dispatch, workflow_call]
+
+jobs:
+  deploy:
+    name: Deploy Production
+    uses: OrderMyGear/charts/.github/workflows/deploy.yml@master
+    with:
+      namespace: general
+      values_file: charts/values-production.yaml
+      environment: production
