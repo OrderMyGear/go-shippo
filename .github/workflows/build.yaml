@@ -1,9 +1,0 @@
-name: Build
-on: [workflow_dispatch, workflow_call]
-
-jobs:
-  build:
-    name: Build
-    uses: OrderMyGear/charts/.github/workflows/build_ui.yml@master
-    with:
-      environment: staging

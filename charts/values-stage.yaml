@@ -6,14 +6,14 @@ overrideJwtPubKey:
 
 {}
 
-colibries: {}
-lions-qe: {}
-toros: {}
-panthers: {}
-panthers-qe: {}
 llamas: {}
-toros-qe: {}
+panthers: {}
+toros: {}
 gophers: {}
+panthers-qe: {}
 nautilus: {}
+toros-qe: {}
+lions-qe: {}
 lions: {}
+colibries: {}
 
