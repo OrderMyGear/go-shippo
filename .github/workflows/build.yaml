@@ -7,3 +7,4 @@ jobs:
     uses: OrderMyGear/charts/.github/workflows/build_ui.yml@master
     with:
       environment: staging
+    secrets: inherit
