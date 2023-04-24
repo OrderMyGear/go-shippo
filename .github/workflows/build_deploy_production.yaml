@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: OrderMyGear/charts/.github/workflows/build_ui.yml@master
+    uses: .github/workflows/build.yaml@master
     with:
       environment: staging
     secrets: inherit

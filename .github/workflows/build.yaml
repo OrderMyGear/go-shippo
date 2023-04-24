@@ -1,10 +1,76 @@
 name: Build
-on: [workflow_dispatch, workflow_call]
-
+on:
+- workflow_dispatch
+- workflow_call
 jobs:
-  build:
-    name: Build
-    uses: OrderMyGear/charts/.github/workflows/build_ui.yml@master
+  build_container:
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Authenticate to Google Cloud
+      id: auth
+      uses: google-github-actions/auth@v1
+      with:
+        token_format: access_token
+        workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+        service_account: ${{ vars.SERVICE_ACCOUNT }}
+    - uses: actions/setup-node@v3
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      with:
+        always-auth: true
+        registry-url: https://npm.omg.sh/
+    - run: npm config set ca null
+    - run: yarn config set cache-folder /usr/local/share/.cache/yarn
+    - name: Auth Docker
+      id: auth_docker
+      run: gcloud auth configure-docker ${{ vars.ARTIFACT_REGISTRY_HOSTNAME }}
+    - name: Service Name
+      id: service_name
+      shell: pwsh
+      run: '"service_name=" + ("${{ github.repository }}" | Split-Path -Leaf) | Add-Content -Path $env:GITHUB_OUTPUT'
+    - name: Repo URL
+      id: repo_url
+      shell: pwsh
+      run: |-
+        "url=" + ( `
+          "${{ vars.ARTIFACT_REGISTRY_HOSTNAME }}", `
+          "${{ vars.ARTIFACT_REGISTRY_PROJECT }}", `
+          "${{ vars.ARTIFACT_REGISTRY_CONTAINER_REPO }}" `
+          -join "/" `
+        ) | Add-Content -Path $env:GITHUB_OUTPUT
+    - name: Container URL
+      id: container_url
+      shell: pwsh
+      run: |-
+        "url=" + ( `
+          "${{ steps.repo_url.outputs.url }}", `
+          "${{ steps.service_name.outputs.service_name }}" `
+          -join "/" `
+        ) | Add-Content -Path $env:GITHUB_OUTPUT
+    - name: Generate Docker Command
+      id: docker_command
+      shell: pwsh
+      run: "\"command=\" + 'docker run --rm -e GIT_COMMIT=${{ github.sha }} -v ${{ github.workspace }}:/workspace -v /home/runner/.yarnrc:/root/.yarnrc -v ${NPM_CONFIG_USERCONFIG}:/root/.npmrc --mount source=yarn_cache,target=/usr/local/share/.cache/yarn -w /workspace ${{ steps.repo_url.outputs.url }}/nodejs-build:${{ vars.NODE_BUILDER_VERSION }}' | Add-Content -Path $env:GITHUB_OUTPUT"
+    - name: Docker Build
+      shell: pwsh
+      run: |-
+        $tags = "-t", ("${{ steps.container_url.outputs.url }}", "${{ github.sha }}".Substring(0,7) -join ":")
+        if ("${{ github.ref_type }}" -eq "tag") {
+          $tags += "-t", ("${{ steps.container_url.outputs.url }}", "${{ github.ref_name }}" -join ":")
+        }
+        docker build $tags .
+    - name: Docker Push
+      run: docker push --all-tags ${{ steps.repo_url.outputs.url }}
+  build_helm:
+    name: Build Helm
+    uses: OrderMyGear/charts/.github/workflows/build_helm.yml@master
     with:
       environment: staging
     secrets: inherit
+
