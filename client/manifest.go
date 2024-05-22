@@ -5,7 +5,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/coldbrewcloud/go-shippo/models"
+	"github.com/OrderMyGear/go-shippo/models"
 )
 
 // CreateManifest creates a new manifest object.
