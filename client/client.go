@@ -59,6 +59,24 @@ func (c *Client) do(method, path string, input, output interface{}) error {
 	return nil
 }
 
+func (c *Client) do2(method, path string, input, output interface{}, headers http.Header) error {
+	url := shippoAPIBaseURL + path
+
+	req, err := c.createRequest(method, url, input)
+	if err != nil {
+		return fmt.Errorf("Error creating request object: %s", err.Error())
+	}
+
+	if err := c.executeRequest2(req, output, headers); err != nil {
+		if aerr, ok := err.(*errors.APIError); ok {
+			return aerr
+		}
+		return fmt.Errorf("Error executing request: %s", err.Error())
+	}
+
+	return nil
+}
+
 func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback) error {
 	nextURL := shippoAPIBaseURL + path + "?results=25"
 
@@ -178,6 +196,54 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	if c.logger != nil {
 		c.logPrintf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
 	}
+
+	if res.StatusCode >= 200 && res.StatusCode < 300 {
+		if output != nil && len(resData) > 0 {
+			if err := json.Unmarshal(resData, output); err != nil {
+				return fmt.Errorf("Error unmarshaling response data: %s", err.Error())
+			}
+		}
+
+		return nil
+	}
+
+	return &errors.APIError{
+		Status:       res.StatusCode,
+		ResponseBody: resData,
+	}
+}
+
+func (c *Client) executeRequest2(req *http.Request, output interface{}, headers http.Header) (err error) {
+	if c.logger != nil {
+		defer func() {
+			if err != nil {
+				c.logPrintf("Client.executeRequest() error: %s", err.Error())
+			}
+		}()
+	}
+
+	httpClient := http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}
+
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("Error making HTTP request: %s", err.Error())
+	}
+	defer res.Body.Close()
+
+	resData, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return fmt.Errorf("Error reading response body data: %s", err.Error())
+	}
+
+	if c.logger != nil {
+		c.logPrintf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
+	}
+
+	headers = res.Header
 
 	if res.StatusCode >= 200 && res.StatusCode < 300 {
 		if output != nil && len(resData) > 0 {

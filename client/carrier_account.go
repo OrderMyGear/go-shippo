@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/OrderMyGear/go-shippo/models"
@@ -58,4 +59,20 @@ func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAcco
 	output := &models.CarrierAccount{}
 	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output)
 	return output, err
+}
+
+func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (string, error) {
+	if objectID == "" {
+		return "", errors.New("Empty object ID")
+	}
+
+	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_url=%s&state=%s", objectID, redirectUrl, state)
+
+	headers := http.Header{}
+	err := c.do2(http.MethodGet, url, nil, nil, headers)
+	if err != nil {
+		return "", err
+	}
+
+	return headers.Get("location"), nil
 }
