@@ -12,5 +12,15 @@ type CarrierAccountInput struct {
 type CarrierAccount struct {
 	CarrierAccountInput
 	CommonOutputFields
-	Test bool `json:"test"`
+	Test       bool        `json:"test"`
+	ObjectInfo *ObjectInfo `json:"object_info"`
+}
+
+type ObjectInfo struct {
+	Authentication *Authentication `json:"authentication"`
+}
+
+type Authentication struct {
+	Type   string `json:"type"`
+	Status string `json:"status"`
 }
