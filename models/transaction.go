@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // See https://goshippo.com/docs/reference#transactions
 type TransactionInput struct {
 	Rate          string `json:"rate,omitempty"`
@@ -22,8 +24,10 @@ type Transaction struct {
 	TrackingNumber       string           `json:"tracking_number,omitempty"`
 	TrackingStatus       string           `json:"tracking_status,omitempty"`
 	TrackingURLProvider  string           `json:"tracking_url_provider,omitempty"`
+	Eta                  time.Time        `json:"eta,omitempty"`
 	LabelURL             string           `json:"label_url,omitempty"`
 	CommercialInvoiceURL string           `json:"commercial_invoice_url,omitempty"`
 	Messages             []*OutputMessage `json:"messages,omitempty"`
+	QRCodeURL            string           `json:"qr_code_url,omitempty"`
 	Async                bool             `json:"async"`
 }
