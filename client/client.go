@@ -59,7 +59,7 @@ func (c *Client) do(method, path string, input, output interface{}) error {
 	return nil
 }
 
-func (c *Client) do2(method, path string, input, output interface{}, headers http.Header) error {
+func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}, headers http.Header) error {
 	url := shippoAPIBaseURL + path
 
 	req, err := c.createRequest(method, url, input)
@@ -67,7 +67,7 @@ func (c *Client) do2(method, path string, input, output interface{}, headers htt
 		return fmt.Errorf("Error creating request object: %s", err.Error())
 	}
 
-	if err := c.executeRequest2(req, output, headers); err != nil {
+	if err := c.executeRequestAndSaveHeaders(req, output, headers); err != nil {
 		if aerr, ok := err.(*errors.APIError); ok {
 			return aerr
 		}
@@ -213,7 +213,7 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	}
 }
 
-func (c *Client) executeRequest2(req *http.Request, output interface{}, headers http.Header) (err error) {
+func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interface{}, headers http.Header) (err error) {
 	if c.logger != nil {
 		defer func() {
 			if err != nil {
