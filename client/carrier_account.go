@@ -74,5 +74,7 @@ func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (str
 		return "", err
 	}
 
+	c.logger.Println("ConnectCarrierAccount headers", headers)
+
 	return headers.Get("location"), nil
 }
