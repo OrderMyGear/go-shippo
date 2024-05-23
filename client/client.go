@@ -243,8 +243,6 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 		c.logPrintf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
 	}
 
-	headers = res.Header
-
 	if res.StatusCode >= 200 && res.StatusCode < 300 {
 		if output != nil && len(resData) > 0 {
 			if err := json.Unmarshal(resData, output); err != nil {
@@ -252,6 +250,9 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 			}
 		}
 
+		return nil
+	} else if res.StatusCode == 302 {
+		headers = res.Header
 		return nil
 	}
 
