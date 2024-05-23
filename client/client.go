@@ -59,7 +59,7 @@ func (c *Client) do(method, path string, input, output interface{}) error {
 	return nil
 }
 
-func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}, headers http.Header) error {
+func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}, headers *http.Header) error {
 	url := shippoAPIBaseURL + path
 
 	req, err := c.createRequest(method, url, input)
@@ -213,7 +213,7 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	}
 }
 
-func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interface{}, headers http.Header) (err error) {
+func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interface{}, headers *http.Header) (err error) {
 	if c.logger != nil {
 		defer func() {
 			if err != nil {
@@ -252,7 +252,7 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 
 		return nil
 	} else if res.StatusCode == 302 {
-		headers = res.Header
+		headers = &res.Header
 		return nil
 	}
 
