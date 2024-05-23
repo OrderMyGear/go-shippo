@@ -66,7 +66,7 @@ func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (str
 		return "", errors.New("Empty object ID")
 	}
 
-	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_url=%s&state=%s", objectID, redirectUrl, state)
+	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s", objectID, redirectUrl, state)
 
 	headers := http.Header{}
 	err := c.doAndSaveHeaders(http.MethodGet, url, nil, nil, headers)
