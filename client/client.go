@@ -252,6 +252,7 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 
 		return nil
 	} else if res.StatusCode == 302 {
+		c.logPrintf("asdf headers", res.Header)
 		headers = &res.Header
 		return nil
 	}
