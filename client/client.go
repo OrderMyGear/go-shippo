@@ -74,7 +74,7 @@ func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}
 		return fmt.Errorf("Error executing request: %s", err.Error())
 	}
 
-	c.logPrintf("asdf headers", headers)
+	c.logPrintf("doAndSaveHeaders headers", headers)
 
 	return nil
 }
@@ -254,7 +254,7 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 
 		return nil
 	} else if res.StatusCode == 302 {
-		c.logPrintf("asdf headers", res.Header)
+		c.logPrintf("executeRequestAndSaveHeaders headers", res.Header)
 		headers = &res.Header
 		return nil
 	}
