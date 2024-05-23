@@ -74,6 +74,8 @@ func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}
 		return fmt.Errorf("Error executing request: %s", err.Error())
 	}
 
+	c.logPrintf("asdf headers", headers)
+
 	return nil
 }
 
