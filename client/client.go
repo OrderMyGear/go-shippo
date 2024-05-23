@@ -255,7 +255,8 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 		return nil
 	} else if res.StatusCode == 302 {
 		c.logPrintf("executeRequestAndSaveHeaders headers", res.Header)
-		headers = &res.Header
+		cloned := res.Header.Clone()
+		headers = &cloned
 		return nil
 	}
 
