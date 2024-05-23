@@ -75,8 +75,6 @@ func (c *Client) doAndSaveHeaders(method, path string, input, output interface{}
 		return nil, fmt.Errorf("Error executing request: %s", err.Error())
 	}
 
-	c.logPrintf("doAndSaveHeaders headers", headers)
-
 	return headers, nil
 }
 
@@ -255,7 +253,6 @@ func (c *Client) executeRequestAndSaveHeaders(req *http.Request, output interfac
 
 		return res.Header, nil
 	} else if res.StatusCode == 302 {
-		c.logPrintf("executeRequestAndSaveHeaders headers", res.Header)
 		return res.Header, nil
 	}
 
