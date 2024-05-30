@@ -3,9 +3,10 @@ package client
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 
-	"github.com/coldbrewcloud/go-shippo/models"
+	"github.com/OrderMyGear/go-shippo/models"
 )
 
 // CreateCarrierAccount creates a new carrier account object.
@@ -58,4 +59,19 @@ func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAcco
 	output := &models.CarrierAccount{}
 	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output)
 	return output, err
+}
+
+func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (string, error) {
+	if objectID == "" {
+		return "", errors.New("Empty object ID")
+	}
+
+	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s", objectID, redirectUrl, state)
+
+	headers, err := c.doAndSaveHeaders(http.MethodGet, url, nil, nil)
+	if err != nil {
+		return "", err
+	}
+
+	return headers.Get("location"), nil
 }
