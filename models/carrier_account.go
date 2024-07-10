@@ -24,3 +24,7 @@ type Authentication struct {
 	Type   string `json:"type"`
 	Status string `json:"status"`
 }
+
+type ConnectOauth struct {
+	RedirectUri string `json:"redirect_uri"`
+}
