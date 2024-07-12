@@ -66,12 +66,13 @@ func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (str
 		return "", errors.New("Empty object ID")
 	}
 
-	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s", objectID, redirectUrl, state)
+	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s&redirect=false", objectID, redirectUrl, state)
 
-	headers, err := c.doAndSaveHeaders(http.MethodGet, url, nil, nil)
+	output := &models.ConnectOauth{}
+	err := c.do(http.MethodGet, url, nil, output)
 	if err != nil {
 		return "", err
 	}
 
-	return headers.Get("location"), nil
+	return output.RedirectUri, nil
 }
