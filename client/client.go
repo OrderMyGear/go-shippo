@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -170,7 +169,7 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	}
 	defer res.Body.Close()
 
-	resData, err := ioutil.ReadAll(res.Body)
+	resData, err := io.ReadAll(res.Body)
 	if err != nil {
 		return fmt.Errorf("Error reading response body data: %s", err.Error())
 	}
