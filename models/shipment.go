@@ -37,6 +37,11 @@ const (
 	ShipmentDangerousGoodsCode09 = "019"
 )
 
+// ShippoSubAccountID allows us to extract the shippo sub account id easily from the input interface{} object
+type ShippoSubAccountID struct {
+	ShippoSubAccountID string `json:"shippo_sub_account_id"`
+}
+
 // See https://goshippo.com/docs/reference#shipments
 type ShipmentInput struct {
 	AddressFrom        interface{}    `json:"address_from"`                  // string or *AddressInput
@@ -49,6 +54,7 @@ type ShipmentInput struct {
 	Metadata           string         `json:"metadata,omitempty"`
 	Extra              *ShipmentExtra `json:"extra,omitempty"`
 	Async              bool           `json:"async"`
+	ShippoSubAccountID
 }
 
 type ShipmentExtra struct {

@@ -121,7 +121,10 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 		}()
 	}
 
-	var reqBody io.Reader
+	var (
+		reqBody   io.Reader
+		subAcctID string
+	)
 	if bodyObject != nil {
 		data, err := json.Marshal(bodyObject)
 		if err != nil {
@@ -131,6 +134,11 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 		reqBodyDebug = data
 
 		reqBody = bytes.NewBuffer(data)
+
+		// Extract shippo sub account id from the request body if it exists
+		if containsID, ok := bodyObject.(models.ShippoSubAccountID); ok {
+			subAcctID = containsID.ShippoSubAccountID
+		}
 	}
 
 	req, err = http.NewRequest(method, url, reqBody)
@@ -148,6 +156,11 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 	// no keep-alive
 	req.Header.Set("Connection", "close")
 	req.Close = true
+
+	// If a shippo sub account id is present, add it to the request headers
+	if len(subAcctID) > 0 {
+		req.Header.Set("SHIPPO-ACCOUNT-ID", subAcctID)
+	}
 
 	return req, nil
 }
