@@ -2,10 +2,11 @@ package models
 
 // See https://goshippo.com/docs/reference#carrier-accounts
 type CarrierAccountInput struct {
-	Carrier    string                 `json:"carrier"`
-	AccountID  string                 `json:"account_id"`
-	Parameters map[string]interface{} `json:"parameters"`
-	Active     bool                   `json:"active"`
+	Carrier            string                 `json:"carrier"`
+	AccountID          string                 `json:"account_id"`
+	Parameters         map[string]interface{} `json:"parameters"`
+	Active             bool                   `json:"active"`
+	ShippoSubAccountID string                 `json:"shippo_sub_account_id,omitempty"`
 }
 
 // See https://goshippo.com/docs/reference#carrier-accounts
