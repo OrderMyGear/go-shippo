@@ -116,7 +116,7 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 				body = string(reqBodyDebug)
 			}
 
-			c.logPrintf("Client.createRequest() HTTP request created: method=%q, url=%q, body=%q",
+			c.logPrintf("Client.createRequest() HTTP request created: method=%s, url=%s, body=%s",
 				req.Method, req.URL.String(), body)
 		}()
 	}
