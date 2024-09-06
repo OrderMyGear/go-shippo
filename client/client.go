@@ -135,9 +135,9 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 
 		reqBody = bytes.NewBuffer(data)
 
-		// Extract shippo sub account id from the request body if it exists
-		if containsID, ok := bodyObject.(models.ShippoSubAccountID); ok {
-			subAcctID = containsID.ShippoSubAccountID
+		switch v := bodyObject.(type) {
+		case models.ShipmentInput:
+			subAcctID = v.ShippoSubAccountID
 		}
 	}
 
