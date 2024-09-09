@@ -138,6 +138,8 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 		switch v := bodyObject.(type) {
 		case models.CarrierAccountInput:
 			subAcctID = v.ShippoSubAccountID
+		case models.RefundInput:
+			subAcctID = v.ShippoSubAccountID
 		case models.ShipmentInput:
 			subAcctID = v.ShippoSubAccountID
 		}
