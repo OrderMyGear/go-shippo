@@ -20,13 +20,13 @@ func (c *Client) PurchaseShippingLabel(input *models.TransactionInput) (*models.
 }
 
 // RetrieveTransaction retrieves an existing transaction by object id.
-func (c *Client) RetrieveTransaction(objectID string) (*models.Transaction, error) {
+func (c *Client) RetrieveTransaction(objectID string, shippoSubAccountID string) (*models.Transaction, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
 
 	output := &models.Transaction{}
-	err := c.do(http.MethodGet, "/transactions/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/transactions/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
 	return output, err
 }
 

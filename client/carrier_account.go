@@ -21,13 +21,13 @@ func (c *Client) CreateCarrierAccount(input *models.CarrierAccountInput) (*model
 }
 
 // RetrieveCarrierAccount retrieves an existing carrier account by object id.
-func (c *Client) RetrieveCarrierAccount(objectID string) (*models.CarrierAccount, error) {
+func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID string) (*models.CarrierAccount, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
 	return output, err
 }
 

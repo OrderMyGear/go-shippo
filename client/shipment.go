@@ -62,13 +62,13 @@ func (c *Client) CreateShipment(input *models.ShipmentInput) (*models.Shipment, 
 }
 
 // RetrieveShipment retrieves an existing shipment by object id.
-func (c *Client) RetrieveShipment(objectID string) (*models.Shipment, error) {
+func (c *Client) RetrieveShipment(objectID string, shippoSubAccountID string) (*models.Shipment, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
 
 	output := &models.Shipment{}
-	err := c.do(http.MethodGet, "/shipments/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/shipments/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
 	return output, err
 }
 
