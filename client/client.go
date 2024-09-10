@@ -142,6 +142,12 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 			subAcctID = v.ShippoSubAccountID
 		case models.ShipmentInput:
 			subAcctID = v.ShippoSubAccountID
+		case models.ShippoSubAccount:
+			subAcctID = v.ShippoSubAccountID
+		case models.TrackingStatusInput:
+			subAcctID = v.ShippoSubAccountID
+		case models.TransactionInput:
+			subAcctID = v.ShippoSubAccountID
 		}
 	}
 
