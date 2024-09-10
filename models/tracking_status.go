@@ -12,9 +12,10 @@ const (
 
 // See https://goshippo.com/docs/reference#tracks
 type TrackingStatusInput struct {
-	Carrier        string `json:"carrier"`
-	TrackingNumber string `json:"tracking_number"`
-	Metadata       string `json:"metadata,omitempty"`
+	Carrier            string `json:"carrier"`
+	TrackingNumber     string `json:"tracking_number"`
+	Metadata           string `json:"metadata,omitempty"`
+	ShippoSubAccountID string `json:"shippo_subaccount_id,omitempty"`
 }
 
 // See https://goshippo.com/docs/reference#tracks
