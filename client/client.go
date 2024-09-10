@@ -104,13 +104,6 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 				return
 			}
 
-			headers := []string{}
-			for hk, hva := range req.Header {
-				for _, hv := range hva {
-					headers = append(headers, fmt.Sprintf("%s=%s", hk, hv))
-				}
-			}
-
 			body := ""
 			if reqBodyDebug != nil {
 				body = string(reqBodyDebug)
