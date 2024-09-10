@@ -162,7 +162,10 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 
 	// If a shippo sub account id is present, add it to the request headers
 	if len(subAcctID) > 0 {
+		c.logPrintf("Client.createRequest() setting SHIPPO-ACCOUNT-ID to %q", subAcctID)
 		req.Header.Set("SHIPPO-ACCOUNT-ID", subAcctID)
+	} else {
+		c.logPrintf("Client.createRequest() NOT setting SHIPPO-ACCOUNT-ID")
 	}
 
 	return req, nil
