@@ -200,3 +200,7 @@ func (c *Client) logPrintf(format string, args ...interface{}) {
 		c.logger.Printf(format, args...)
 	}
 }
+
+func (c *Client) subAccountHeader(id string) map[string]string {
+	return map[string]string{"SHIPPO-ACCOUNT-ID": id}
+}

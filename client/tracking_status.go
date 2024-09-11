@@ -40,7 +40,3 @@ func (c *Client) RegisterTrackingWebhook(carrier, trackingNumber, metadata strin
 	}, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
-
-func (c *Client) subAccountHeader(id string) map[string]string {
-	return map[string]string{"SHIPPO-ACCOUNT-ID": id}
-}

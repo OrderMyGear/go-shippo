@@ -9,7 +9,7 @@ import (
 )
 
 // GetShippingRates gets rates for a shipping object.
-func (c *Client) GetShippingRates(shipmentObjectID, currencyCode string) ([]*models.Rate, error) {
+func (c *Client) GetShippingRates(shipmentObjectID, currencyCode string, shippoSubAccountID string) ([]*models.Rate, error) {
 	if shipmentObjectID == "" {
 		return nil, errors.New("Empty shipment object ID")
 	}
@@ -26,17 +26,17 @@ func (c *Client) GetShippingRates(shipmentObjectID, currencyCode string) ([]*mod
 
 		list = append(list, item)
 		return nil
-	}, nil)
+	}, c.subAccountHeader(shippoSubAccountID))
 	return list, err
 }
 
 // RetrieveRate retrieves an existing rate by object id.
-func (c *Client) RetrieveRate(objectID string) (*models.Rate, error) {
+func (c *Client) RetrieveRate(objectID string, shippoSubAccountID string) (*models.Rate, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
 
 	output := &models.Rate{}
-	err := c.do(http.MethodGet, "/rates/"+objectID, nil, output, nil)
+	err := c.do(http.MethodGet, "/rates/"+objectID, nil, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }

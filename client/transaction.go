@@ -9,13 +9,13 @@ import (
 )
 
 // PurchaseShippingLabel creates a new transaction object and purchases the shipping label for the provided rate.
-func (c *Client) PurchaseShippingLabel(input *models.TransactionInput) (*models.Transaction, error) {
+func (c *Client) PurchaseShippingLabel(input *models.TransactionInput, shippoSubAccountID string) (*models.Transaction, error) {
 	if input == nil {
 		return nil, errors.New("nil input")
 	}
 
 	output := &models.Transaction{}
-	err := c.do(http.MethodPost, "/transactions/", input, output, nil)
+	err := c.do(http.MethodPost, "/transactions/", input, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
@@ -31,7 +31,7 @@ func (c *Client) RetrieveTransaction(objectID string, shippoSubAccountID string)
 }
 
 // ListAllTransactions lists all transaction objects.
-func (c *Client) ListAllTransactions() ([]*models.Transaction, error) {
+func (c *Client) ListAllTransactions(shippoSubAccountID string) ([]*models.Transaction, error) {
 	list := []*models.Transaction{}
 	err := c.doList(http.MethodGet, "/transactions/", nil, func(v json.RawMessage) error {
 		item := &models.Transaction{}
@@ -41,6 +41,6 @@ func (c *Client) ListAllTransactions() ([]*models.Transaction, error) {
 
 		list = append(list, item)
 		return nil
-	}, nil)
+	}, c.subAccountHeader(shippoSubAccountID))
 	return list, err
 }
