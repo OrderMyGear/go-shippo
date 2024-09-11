@@ -40,10 +40,10 @@ func (c *Client) SetTraceLogger(logger *log.Logger) *log.Logger {
 	return oldLogger
 }
 
-func (c *Client) do(method, path string, input, output interface{}) error {
+func (c *Client) do(method, path string, input, output interface{}, headers map[string]string) error {
 	url := shippoAPIBaseURL + path
 
-	req, err := c.createRequest(method, url, input)
+	req, err := c.createRequest(method, url, input, headers)
 	if err != nil {
 		return fmt.Errorf("Error creating request object: %s", err.Error())
 	}
@@ -58,11 +58,11 @@ func (c *Client) do(method, path string, input, output interface{}) error {
 	return nil
 }
 
-func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback) error {
+func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback, headers map[string]string) error {
 	nextURL := shippoAPIBaseURL + path + "?results=25"
 
 	for {
-		req, err := c.createRequest(method, nextURL, input)
+		req, err := c.createRequest(method, nextURL, input, headers)
 		if err != nil {
 			return fmt.Errorf("Error creating request object: %s", err.Error())
 		}
@@ -91,7 +91,7 @@ func (c *Client) doList(method, path string, input interface{}, outputCallback l
 	return nil
 }
 
-func (c *Client) createRequest(method, url string, bodyObject interface{}) (req *http.Request, err error) {
+func (c *Client) createRequest(method, url string, bodyObject interface{}, headers map[string]string) (req *http.Request, err error) {
 	var reqBodyDebug []byte
 
 	if c.logger != nil {
@@ -159,6 +159,11 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}) (req 
 	// no keep-alive
 	req.Header.Set("Connection", "close")
 	req.Close = true
+
+	for k, v := range headers {
+		c.logPrintf("Client.createRequest() setting header: key=%q, value=%q", k, v)
+		req.Header.Set(k, v)
+	}
 
 	// If a shippo sub account id is present, add it to the request headers
 	if len(subAcctID) > 0 {
