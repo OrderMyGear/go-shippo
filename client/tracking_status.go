@@ -17,7 +17,7 @@ func (c *Client) GetTrackingUpdate(carrier, trackingNumber string, shippoSubAcco
 	}
 
 	output := &models.TrackingStatus{}
-	err := c.do(http.MethodGet, "/tracks/"+carrier+"/"+trackingNumber, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
+	err := c.do(http.MethodGet, "/tracks/"+carrier+"/"+trackingNumber, nil, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
@@ -34,10 +34,13 @@ func (c *Client) RegisterTrackingWebhook(carrier, trackingNumber, metadata strin
 
 	output := &models.TrackingStatus{}
 	err := c.do(http.MethodPost, "/tracks/", &models.TrackingStatusInput{
-		Carrier:            carrier,
-		TrackingNumber:     trackingNumber,
-		Metadata:           metadata,
-		ShippoSubAccountID: shippoSubAccountID,
-	}, output)
+		Carrier:        carrier,
+		TrackingNumber: trackingNumber,
+		Metadata:       metadata,
+	}, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
+}
+
+func (c *Client) subAccountHeader(id string) map[string]string {
+	return map[string]string{"SHIPPO-ACCOUNT-ID": id}
 }

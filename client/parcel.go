@@ -15,7 +15,7 @@ func (c *Client) CreateParcel(input *models.ParcelInput) (*models.Parcel, error)
 	}
 
 	output := &models.Parcel{}
-	err := c.do(http.MethodPost, "/parcels/", input, output)
+	err := c.do(http.MethodPost, "/parcels/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveParcel(objectID string) (*models.Parcel, error) {
 	}
 
 	output := &models.Parcel{}
-	err := c.do(http.MethodGet, "/parcels/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/parcels/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -41,6 +41,6 @@ func (c *Client) ListAllParcels() ([]*models.Parcel, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

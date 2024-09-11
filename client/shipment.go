@@ -57,7 +57,7 @@ func (c *Client) CreateShipment(input *models.ShipmentInput) (*models.Shipment, 
 	}
 
 	output := &models.Shipment{}
-	err := c.do(http.MethodPost, "/shipments/", input, output)
+	err := c.do(http.MethodPost, "/shipments/", input, output, nil)
 	return output, err
 }
 
@@ -68,7 +68,7 @@ func (c *Client) RetrieveShipment(objectID string, shippoSubAccountID string) (*
 	}
 
 	output := &models.Shipment{}
-	err := c.do(http.MethodGet, "/shipments/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
+	err := c.do(http.MethodGet, "/shipments/"+objectID, nil, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
@@ -83,6 +83,6 @@ func (c *Client) ListAllShipments() ([]*models.Shipment, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

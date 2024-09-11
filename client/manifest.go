@@ -15,7 +15,7 @@ func (c *Client) CreateManifest(input *models.ManifestInput) (*models.Manifest, 
 	}
 
 	output := &models.Manifest{}
-	err := c.do(http.MethodPost, "/manifests/", input, output)
+	err := c.do(http.MethodPost, "/manifests/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveManifest(objectID string) (*models.Manifest, error) {
 	}
 
 	output := &models.Manifest{}
-	err := c.do(http.MethodGet, "/manifests/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/manifests/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -41,6 +41,6 @@ func (c *Client) ListAllManifests() ([]*models.Manifest, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

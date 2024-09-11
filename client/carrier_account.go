@@ -16,7 +16,7 @@ func (c *Client) CreateCarrierAccount(input *models.CarrierAccountInput) (*model
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodPost, "/carrier_accounts/", input, output)
+	err := c.do(http.MethodPost, "/carrier_accounts/", input, output, nil)
 	return output, err
 }
 
@@ -27,7 +27,7 @@ func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID stri
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
+	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, nil, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
@@ -42,7 +42,7 @@ func (c *Client) ListAllCarrierAccounts() ([]*models.CarrierAccount, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }
 
@@ -57,7 +57,7 @@ func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAcco
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output)
+	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output, nil)
 	return output, err
 }
 
@@ -69,7 +69,7 @@ func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (str
 	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s&redirect=false", objectID, redirectUrl, state)
 
 	output := &models.ConnectOauth{}
-	err := c.do(http.MethodGet, url, nil, output)
+	err := c.do(http.MethodGet, url, nil, output, nil)
 	if err != nil {
 		return "", err
 	}

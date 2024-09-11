@@ -15,7 +15,7 @@ func (c *Client) PurchaseShippingLabel(input *models.TransactionInput) (*models.
 	}
 
 	output := &models.Transaction{}
-	err := c.do(http.MethodPost, "/transactions/", input, output)
+	err := c.do(http.MethodPost, "/transactions/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveTransaction(objectID string, shippoSubAccountID string)
 	}
 
 	output := &models.Transaction{}
-	err := c.do(http.MethodGet, "/transactions/"+objectID, &models.ShippoSubAccount{ShippoSubAccountID: shippoSubAccountID}, output)
+	err := c.do(http.MethodGet, "/transactions/"+objectID, nil, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
@@ -41,6 +41,6 @@ func (c *Client) ListAllTransactions() ([]*models.Transaction, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

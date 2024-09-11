@@ -15,7 +15,7 @@ func (c *Client) CreateCustomsItem(input *models.CustomsItemInput) (*models.Cust
 	}
 
 	output := &models.CustomsItem{}
-	err := c.do(http.MethodPost, "/customs/items/", input, output)
+	err := c.do(http.MethodPost, "/customs/items/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveCustomsItem(objectID string) (*models.CustomsItem, erro
 	}
 
 	output := &models.CustomsItem{}
-	err := c.do(http.MethodGet, "/customs/items/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/customs/items/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -41,7 +41,7 @@ func (c *Client) ListAllCustomsItems() ([]*models.CustomsItem, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }
 
@@ -58,7 +58,7 @@ func (c *Client) CreateCustomsDeclaration(input *models.CustomsDeclarationInput)
 	}
 
 	output := &models.CustomsDeclaration{}
-	err := c.do(http.MethodPost, "/customs/declarations/", input, output)
+	err := c.do(http.MethodPost, "/customs/declarations/", input, output, nil)
 	return output, err
 }
 
@@ -69,7 +69,7 @@ func (c *Client) RetrieveCustomsDeclaration(objectID string) (*models.CustomsDec
 	}
 
 	output := &models.CustomsDeclaration{}
-	err := c.do(http.MethodGet, "/customs/declarations/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/customs/declarations/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -84,6 +84,6 @@ func (c *Client) ListAllCustomsDeclaration() ([]*models.CustomsDeclaration, erro
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

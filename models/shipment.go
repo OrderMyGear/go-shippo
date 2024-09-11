@@ -49,7 +49,6 @@ type ShipmentInput struct {
 	Metadata           string         `json:"metadata,omitempty"`
 	Extra              *ShipmentExtra `json:"extra,omitempty"`
 	Async              bool           `json:"async"`
-	ShippoSubAccountID string         `json:"shippo_sub_account_id,omitempty"`
 }
 
 type ShipmentExtra struct {

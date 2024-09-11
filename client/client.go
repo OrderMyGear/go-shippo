@@ -114,10 +114,7 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 		}()
 	}
 
-	var (
-		reqBody   io.Reader
-		subAcctID string
-	)
+	var reqBody io.Reader
 	if bodyObject != nil {
 		data, err := json.Marshal(bodyObject)
 		if err != nil {
@@ -127,21 +124,6 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 		reqBodyDebug = data
 
 		reqBody = bytes.NewBuffer(data)
-
-		switch v := bodyObject.(type) {
-		case models.CarrierAccountInput:
-			subAcctID = v.ShippoSubAccountID
-		case models.RefundInput:
-			subAcctID = v.ShippoSubAccountID
-		case models.ShipmentInput:
-			subAcctID = v.ShippoSubAccountID
-		case models.ShippoSubAccount:
-			subAcctID = v.ShippoSubAccountID
-		case models.TrackingStatusInput:
-			subAcctID = v.ShippoSubAccountID
-		case models.TransactionInput:
-			subAcctID = v.ShippoSubAccountID
-		}
 	}
 
 	req, err = http.NewRequest(method, url, reqBody)
@@ -160,17 +142,12 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 	req.Header.Set("Connection", "close")
 	req.Close = true
 
-	for k, v := range headers {
-		c.logPrintf("Client.createRequest() setting header: key=%q, value=%q", k, v)
-		req.Header.Set(k, v)
-	}
-
-	// If a shippo sub account id is present, add it to the request headers
-	if len(subAcctID) > 0 {
-		c.logPrintf("Client.createRequest() setting SHIPPO-ACCOUNT-ID to %q", subAcctID)
-		req.Header.Set("SHIPPO-ACCOUNT-ID", subAcctID)
-	} else {
-		c.logPrintf("Client.createRequest() NOT setting SHIPPO-ACCOUNT-ID")
+	// add any passed in headers
+	if headers != nil {
+		for k, v := range headers {
+			c.logPrintf("Client.createRequest() setting header: key=%q, value=%q", k, v)
+			req.Header.Set(k, v)
+		}
 	}
 
 	return req, nil

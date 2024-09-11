@@ -30,7 +30,7 @@ func (c *Client) RetrieveBatch(objectID string, page uint, objectResultsFilter s
 	}
 
 	output := &models.Batch{}
-	err := c.do(http.MethodGet, url, nil, output)
+	err := c.do(http.MethodGet, url, nil, output, nil)
 	return output, err
 }
 
@@ -44,7 +44,7 @@ func (c *Client) AddBatchShipmentsToBatch(objectID string, batchShipments []*mod
 	}
 
 	output := &models.Batch{}
-	err := c.do(http.MethodPost, "/batches/"+objectID+"/add_shipments", &batchShipments, output)
+	err := c.do(http.MethodPost, "/batches/"+objectID+"/add_shipments", &batchShipments, output, nil)
 	return output, err
 }
 
@@ -58,7 +58,7 @@ func (c *Client) RemoveBatchShipmentsFromBatch(objectID string, batchShipmentIDs
 	}
 
 	output := &models.Batch{}
-	err := c.do(http.MethodPost, "/batches/"+objectID+"/remove_shipments", &batchShipmentIDs, output)
+	err := c.do(http.MethodPost, "/batches/"+objectID+"/remove_shipments", &batchShipmentIDs, output, nil)
 	return output, err
 }
 
@@ -72,6 +72,6 @@ func (c *Client) PurchaseBatch(objectID string) (*models.Batch, error) {
 	}
 
 	output := &models.Batch{}
-	err := c.do(http.MethodPost, "/batches/"+objectID+"/purchase", nil, output)
+	err := c.do(http.MethodPost, "/batches/"+objectID+"/purchase", nil, output, nil)
 	return output, err
 }

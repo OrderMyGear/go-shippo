@@ -15,7 +15,7 @@ func (c *Client) CreateAddress(input *models.AddressInput) (*models.Address, err
 	}
 
 	output := &models.Address{}
-	err := c.do(http.MethodPost, "/addresses/", input, output)
+	err := c.do(http.MethodPost, "/addresses/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveAddress(objectID string) (*models.Address, error) {
 	}
 
 	output := &models.Address{}
-	err := c.do(http.MethodGet, "/addresses/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/addresses/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -41,6 +41,6 @@ func (c *Client) ListAllAddresses() ([]*models.Address, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

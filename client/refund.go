@@ -15,7 +15,7 @@ func (c *Client) CreateRefund(input *models.RefundInput) (*models.Refund, error)
 	}
 
 	output := &models.Refund{}
-	err := c.do(http.MethodPost, "/refunds/", input, output)
+	err := c.do(http.MethodPost, "/refunds/", input, output, nil)
 	return output, err
 }
 
@@ -26,7 +26,7 @@ func (c *Client) RetrieveRefund(objectID string) (*models.Refund, error) {
 	}
 
 	output := &models.Refund{}
-	err := c.do(http.MethodGet, "/refunds/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/refunds/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -41,6 +41,6 @@ func (c *Client) ListAllRefunds() ([]*models.Refund, error) {
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }

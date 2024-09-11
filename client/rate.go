@@ -26,7 +26,7 @@ func (c *Client) GetShippingRates(shipmentObjectID, currencyCode string) ([]*mod
 
 		list = append(list, item)
 		return nil
-	})
+	}, nil)
 	return list, err
 }
 
@@ -37,6 +37,6 @@ func (c *Client) RetrieveRate(objectID string) (*models.Rate, error) {
 	}
 
 	output := &models.Rate{}
-	err := c.do(http.MethodGet, "/rates/"+objectID, nil, output)
+	err := c.do(http.MethodGet, "/rates/"+objectID, nil, output, nil)
 	return output, err
 }
