@@ -104,6 +104,12 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 				return
 			}
 
+			for hk, hva := range req.Header {
+				for _, hv := range hva {
+					c.logPrintf("Client.createRequest() Header %s=%s", hk, hv)
+				}
+			}
+
 			body := ""
 			if reqBodyDebug != nil {
 				body = string(reqBodyDebug)
@@ -145,7 +151,6 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 	// add any passed in headers
 	if headers != nil {
 		for k, v := range headers {
-			c.logPrintf("Client.createRequest() setting header: key=%q, value=%q", k, v)
 			req.Header.Set(k, v)
 		}
 	}
