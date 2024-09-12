@@ -151,7 +151,9 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 	// add any passed in headers
 	if headers != nil {
 		for k, v := range headers {
-			req.Header.Set(k, v)
+			if len(v) > 0 {
+				req.Header.Set(k, v)
+			}
 		}
 	}
 

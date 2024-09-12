@@ -21,13 +21,13 @@ func (c *Client) CreateCarrierAccount(input *models.CarrierAccountInput, shippoS
 }
 
 // RetrieveCarrierAccount retrieves an existing carrier account by object id.
-func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID string) (*models.CarrierAccount, error) {
+func (c *Client) RetrieveCarrierAccount(objectID string) (*models.CarrierAccount, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, nil, output, c.subAccountHeader(shippoSubAccountID))
+	err := c.do(http.MethodGet, "/carrier_accounts/"+objectID, nil, output, nil)
 	return output, err
 }
 
@@ -48,7 +48,7 @@ func (c *Client) ListAllCarrierAccounts(shippoSubAccountID string) ([]*models.Ca
 
 // UpdateCarrierAccount updates an existing carrier account.
 // AccountID and Carrier cannot be updated because they form the unique identifier together.
-func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAccountInput, shippoSubAccountID string) (*models.CarrierAccount, error) {
+func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAccountInput) (*models.CarrierAccount, error) {
 	if objectID == "" {
 		return nil, errors.New("Empty object ID")
 	}
@@ -57,11 +57,11 @@ func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAcco
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output, c.subAccountHeader(shippoSubAccountID))
+	err := c.do(http.MethodPut, "/carrier_accounts/"+objectID, input, output, nil)
 	return output, err
 }
 
-func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string, shippoSubAccountID string) (string, error) {
+func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string) (string, error) {
 	if objectID == "" {
 		return "", errors.New("Empty object ID")
 	}
@@ -69,7 +69,7 @@ func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string, ship
 	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s&redirect=false", objectID, redirectUrl, state)
 
 	output := &models.ConnectOauth{}
-	err := c.do(http.MethodGet, url, nil, output, c.subAccountHeader(shippoSubAccountID))
+	err := c.do(http.MethodGet, url, nil, output, nil)
 	if err != nil {
 		return "", err
 	}
