@@ -207,5 +207,9 @@ func (c *Client) logPrintf(format string, args ...interface{}) {
 }
 
 func (c *Client) subAccountHeader(id string) map[string]string {
-	return map[string]string{"SHIPPO-ACCOUNT-ID": id}
+	headers := make(map[string]string)
+	if len(id) > 0 {
+		headers["SHIPPO-ACCOUNT-ID"] = id
+	}
+	return headers
 }
