@@ -12,6 +12,6 @@ func (c *Client) CreateSubAccount(input *models.SubAccountInput) (*models.SubAcc
 	}
 
 	output := &models.SubAccount{}
-	err := c.do(http.MethodPost, "/shippo-accounts/", input, output, nil)
+	err := c.doWithoutVersion(http.MethodPost, "/shippo-accounts", input, output, nil)
 	return output, err
 }

@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	shippoAPIBaseURL = "https://api.goshippo.com/v1"
+	shippoAPIBaseURL          = "https://api.goshippo.com/v1"
+	shippoAPIBaseURLNoVersion = "https://api.goshippo.com"
 )
 
 type Client struct {
@@ -41,7 +42,17 @@ func (c *Client) SetTraceLogger(logger *log.Logger) *log.Logger {
 }
 
 func (c *Client) do(method, path string, input, output interface{}, headers map[string]string) error {
-	url := shippoAPIBaseURL + path
+	return c._do(shippoAPIBaseURL, method, path, input, output, headers)
+}
+
+// doWithoutVersion was added to support the /shippo-accounts endpoint that throws a 404 if `/v1/` is present
+// https://docs.goshippo.com/docs/platformaccounts/platform_using_accounts/#create-a-managed-shippo-account-for-your-customer
+func (c *Client) doWithoutVersion(method, path string, input, output interface{}, headers map[string]string) error {
+	return c._do(shippoAPIBaseURLNoVersion, method, path, input, output, headers)
+}
+
+func (c *Client) _do(baseUrl, method, path string, input, output interface{}, headers map[string]string) error {
+	url := baseUrl + path
 
 	req, err := c.createRequest(method, url, input, headers)
 	if err != nil {
