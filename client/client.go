@@ -106,7 +106,9 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 
 			for hk, hva := range req.Header {
 				for _, hv := range hva {
-					c.logPrintf("Client.createRequest() Header %s=%s", hk, hv)
+					if hk != "Authorization" {
+						c.logPrintf("Client.createRequest() Header %s=%s", hk, hv)
+					}
 				}
 			}
 
