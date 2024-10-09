@@ -20,6 +20,16 @@ func (c *Client) CreateCarrierAccount(input *models.CarrierAccountInput, shippoS
 	return output, err
 }
 
+func (c *Client) RegisterCarrierAccount(input *models.CarrierAccountInput, shippoSubAccountID string) (*models.CarrierAccount, error) {
+	if input == nil {
+		return nil, errors.New("nil input")
+	}
+
+	output := &models.CarrierAccount{}
+	err := c.doWithoutVersion(http.MethodPost, "/carrier_accounts/register/new", input, output, c.subAccountHeader(shippoSubAccountID))
+	return output, err
+}
+
 // RetrieveCarrierAccount retrieves an existing carrier account by object id.
 func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID string) (*models.CarrierAccount, error) {
 	if objectID == "" {
