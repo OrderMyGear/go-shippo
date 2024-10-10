@@ -56,12 +56,9 @@ func getBaseUrl(headers map[string]string) string {
 	if headers != nil {
 		if _, ok := headers[ShippoAccountIdHeader]; ok {
 			return shippoAPIBaseURLNoVersion
-		} else {
-			return shippoAPIBaseURL
 		}
-	} else {
-		return shippoAPIBaseURL
 	}
+	return shippoAPIBaseURL
 }
 
 func (c *Client) _do(baseUrl, method, path string, input, output interface{}, headers map[string]string) error {
