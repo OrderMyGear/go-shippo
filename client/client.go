@@ -52,8 +52,20 @@ func (c *Client) doWithoutVersion(method, path string, input, output interface{}
 	return c._do(shippoAPIBaseURLNoVersion, method, path, input, output, headers)
 }
 
+func getBaseUrl(headers map[string]string) string {
+	if headers != nil {
+		if _, ok := headers[SHIPPO_ACCOUNT_ID_HEADER]; ok {
+			return shippoAPIBaseURLNoVersion
+		} else {
+			return shippoAPIBaseURL
+		}
+	} else {
+		return shippoAPIBaseURL
+	}
+}
+
 func (c *Client) _do(baseUrl, method, path string, input, output interface{}, headers map[string]string) error {
-	url := baseUrl + path
+	url := getBaseUrl(headers) + path
 
 	req, err := c.createRequest(method, url, input, headers)
 	if err != nil {
