@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	SHIPPO_ACCOUNT_ID_HEADER  = "SHIPPO-ACCOUNT-ID"
+	ShippoAccountIdHeader     = "SHIPPO-ACCOUNT-ID"
 	shippoAPIBaseURL          = "https://api.goshippo.com/v1"
 	shippoAPIBaseURLNoVersion = "https://api.goshippo.com"
 )
@@ -54,7 +54,7 @@ func (c *Client) doWithoutVersion(method, path string, input, output interface{}
 
 func getBaseUrl(headers map[string]string) string {
 	if headers != nil {
-		if _, ok := headers[SHIPPO_ACCOUNT_ID_HEADER]; ok {
+		if _, ok := headers[ShippoAccountIdHeader]; ok {
 			return shippoAPIBaseURLNoVersion
 		} else {
 			return shippoAPIBaseURL
@@ -235,7 +235,7 @@ func (c *Client) logPrintf(format string, args ...interface{}) {
 func (c *Client) subAccountHeader(id string) map[string]string {
 	headers := make(map[string]string)
 	if len(id) > 0 {
-		headers[SHIPPO_ACCOUNT_ID_HEADER] = id
+		headers[ShippoAccountIdHeader] = id
 	}
 	return headers
 }
