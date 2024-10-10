@@ -13,6 +13,7 @@ import (
 )
 
 const (
+	SHIPPO_ACCOUNT_ID_HEADER  = "SHIPPO-ACCOUNT-ID"
 	shippoAPIBaseURL          = "https://api.goshippo.com/v1"
 	shippoAPIBaseURLNoVersion = "https://api.goshippo.com"
 )
@@ -222,7 +223,7 @@ func (c *Client) logPrintf(format string, args ...interface{}) {
 func (c *Client) subAccountHeader(id string) map[string]string {
 	headers := make(map[string]string)
 	if len(id) > 0 {
-		headers["SHIPPO-ACCOUNT-ID"] = id
+		headers[SHIPPO_ACCOUNT_ID_HEADER] = id
 	}
 	return headers
 }
