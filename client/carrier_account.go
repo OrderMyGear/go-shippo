@@ -26,7 +26,7 @@ func (c *Client) RegisterCarrierAccount(input *models.CarrierAccountInput, shipp
 	}
 
 	output := &models.CarrierAccount{}
-	err := c.doWithoutVersion(http.MethodPost, "/carrier_accounts/register/new", input, output, c.subAccountHeader(shippoSubAccountID))
+	err := c.do(http.MethodPost, "/carrier_accounts/register/new", input, output, c.subAccountHeader(shippoSubAccountID))
 	return output, err
 }
 
