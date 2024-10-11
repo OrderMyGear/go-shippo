@@ -43,25 +43,6 @@ func (c *Client) SetTraceLogger(logger *log.Logger) *log.Logger {
 }
 
 func (c *Client) do(method, path string, input, output interface{}, headers map[string]string) error {
-	return c._do(shippoAPIBaseURL, method, path, input, output, headers)
-}
-
-// doWithoutVersion was added to support the /shippo-accounts endpoint that throws a 404 if `/v1/` is present
-// https://docs.goshippo.com/docs/platformaccounts/platform_using_accounts/#create-a-managed-shippo-account-for-your-customer
-func (c *Client) doWithoutVersion(method, path string, input, output interface{}, headers map[string]string) error {
-	return c._do(shippoAPIBaseURLNoVersion, method, path, input, output, headers)
-}
-
-func getBaseUrl(headers map[string]string) string {
-	if headers != nil {
-		if _, ok := headers[ShippoAccountIdHeader]; ok {
-			return shippoAPIBaseURLNoVersion
-		}
-	}
-	return shippoAPIBaseURL
-}
-
-func (c *Client) _do(baseUrl, method, path string, input, output interface{}, headers map[string]string) error {
 	url := getBaseUrl(headers) + path
 
 	req, err := c.createRequest(method, url, input, headers)
@@ -79,8 +60,17 @@ func (c *Client) _do(baseUrl, method, path string, input, output interface{}, he
 	return nil
 }
 
+func getBaseUrl(headers map[string]string) string {
+	if headers != nil {
+		if _, ok := headers[ShippoAccountIdHeader]; ok {
+			return shippoAPIBaseURLNoVersion
+		}
+	}
+	return shippoAPIBaseURL
+}
+
 func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback, headers map[string]string) error {
-	nextURL := shippoAPIBaseURL + path + "?results=25"
+	nextURL := getBaseUrl(headers) + path + "?results=25"
 
 	for {
 		req, err := c.createRequest(method, nextURL, input, headers)
