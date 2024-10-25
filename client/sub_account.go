@@ -11,7 +11,7 @@ func (c *Client) CreateSubAccount(input *models.SubAccountInput) (*models.SubAcc
 		return nil, errors.New("nil input")
 	}
 
-	// Truncate fields to avoid Stripe API errors
+	// Truncate fields to avoid Shippo API errors
 	if len(input.FirstName) > 30 {
 		input.FirstName = input.FirstName[:30]
 	}

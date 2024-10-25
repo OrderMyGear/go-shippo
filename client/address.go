@@ -14,7 +14,7 @@ func (c *Client) CreateAddress(input *models.AddressInput, shippoSubAccountID st
 		return nil, errors.New("nil input")
 	}
 
-	// Truncate phone to 50 characters to avoid Stripe API errors
+	// Truncate phone to 50 characters to avoid Shippo API errors
 	if len(input.Phone) > 50 {
 		input.Phone = input.Phone[:50]
 	}
