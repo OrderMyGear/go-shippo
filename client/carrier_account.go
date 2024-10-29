@@ -43,7 +43,7 @@ func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID stri
 
 // ListAllCarrierAccounts lists all carrier accounts.
 func (c *Client) ListAllCarrierAccounts(shippoSubAccountID string) ([]*models.CarrierAccount, error) {
-	list := []*models.CarrierAccount{}
+	var list []*models.CarrierAccount
 	err := c.doList(http.MethodGet, "/carrier_accounts/", nil, func(v json.RawMessage) error {
 		item := &models.CarrierAccount{}
 		if err := json.Unmarshal(v, item); err != nil {

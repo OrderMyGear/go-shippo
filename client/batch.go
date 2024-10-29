@@ -18,7 +18,7 @@ func (c *Client) RetrieveBatch(objectID string, page uint, objectResultsFilter s
 	}
 
 	url := "/batches/" + objectID
-	qs := []string{}
+	var qs []string
 	if page > 0 {
 		qs = append(qs, fmt.Sprintf("page=%d", page))
 	}

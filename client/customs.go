@@ -32,7 +32,7 @@ func (c *Client) RetrieveCustomsItem(objectID string, shippoSubAccountID string)
 
 // ListAllCustomsItems lists all customs item objects.
 func (c *Client) ListAllCustomsItems(shippoSubAccountID string) ([]*models.CustomsItem, error) {
-	list := []*models.CustomsItem{}
+	var list []*models.CustomsItem
 	err := c.doList(http.MethodGet, "/customs/items/", nil, func(v json.RawMessage) error {
 		item := &models.CustomsItem{}
 		if err := json.Unmarshal(v, item); err != nil {
@@ -75,7 +75,7 @@ func (c *Client) RetrieveCustomsDeclaration(objectID string, shippoSubAccountID 
 
 // ListAllCustomsDeclaration lists all customs declaration objects.
 func (c *Client) ListAllCustomsDeclaration(shippoSubAccountID string) ([]*models.CustomsDeclaration, error) {
-	list := []*models.CustomsDeclaration{}
+	var list []*models.CustomsDeclaration
 	err := c.doList(http.MethodGet, "/customs/declarations/", nil, func(v json.RawMessage) error {
 		item := &models.CustomsDeclaration{}
 		if err := json.Unmarshal(v, item); err != nil {

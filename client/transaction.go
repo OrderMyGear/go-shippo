@@ -32,7 +32,7 @@ func (c *Client) RetrieveTransaction(objectID string, shippoSubAccountID string)
 
 // ListAllTransactions lists all transaction objects.
 func (c *Client) ListAllTransactions(shippoSubAccountID string) ([]*models.Transaction, error) {
-	list := []*models.Transaction{}
+	var list []*models.Transaction
 	err := c.doList(http.MethodGet, "/transactions/", nil, func(v json.RawMessage) error {
 		item := &models.Transaction{}
 		if err := json.Unmarshal(v, item); err != nil {

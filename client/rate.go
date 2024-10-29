@@ -17,7 +17,7 @@ func (c *Client) GetShippingRates(shipmentObjectID, currencyCode string, shippoS
 		return nil, errors.New("Empty currency code")
 	}
 
-	list := []*models.Rate{}
+	var list []*models.Rate
 	err := c.doList(http.MethodGet, "/shipments/"+shipmentObjectID+"/rates/"+currencyCode, nil, func(v json.RawMessage) error {
 		item := &models.Rate{}
 		if err := json.Unmarshal(v, item); err != nil {

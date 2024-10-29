@@ -37,7 +37,7 @@ func (c *Client) RetrieveAddress(objectID string, shippoSubAccountID string) (*m
 
 // ListAllAddresses lists all addresses.
 func (c *Client) ListAllAddresses(shippoSubAccountID string) ([]*models.Address, error) {
-	list := []*models.Address{}
+	var list []*models.Address
 	err := c.doList(http.MethodGet, "/addresses/", nil, func(v json.RawMessage) error {
 		item := &models.Address{}
 		if err := json.Unmarshal(v, item); err != nil {

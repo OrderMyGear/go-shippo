@@ -32,7 +32,7 @@ func (c *Client) RetrieveRefund(objectID string, shippoSubAccountID string) (*mo
 
 // ListAllRefunds list all refund objects.
 func (c *Client) ListAllRefunds(shippoSubAccountID string) ([]*models.Refund, error) {
-	list := []*models.Refund{}
+	var list []*models.Refund
 	err := c.doList(http.MethodGet, "/refunds/", nil, func(v json.RawMessage) error {
 		item := &models.Refund{}
 		if err := json.Unmarshal(v, item); err != nil {

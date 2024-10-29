@@ -74,7 +74,7 @@ func (c *Client) RetrieveShipment(objectID string, shippoSubAccountID string) (*
 
 // ListAllShipments lists all shipment objects.
 func (c *Client) ListAllShipments(shippoSubAccountID string) ([]*models.Shipment, error) {
-	list := []*models.Shipment{}
+	var list []*models.Shipment
 	err := c.doList(http.MethodGet, "/shipments/", nil, func(v json.RawMessage) error {
 		item := &models.Shipment{}
 		if err := json.Unmarshal(v, item); err != nil {

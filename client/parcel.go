@@ -32,7 +32,7 @@ func (c *Client) RetrieveParcel(objectID string, shippoSubAccountID string) (*mo
 
 // ListAllParcels lists all parcel objects.
 func (c *Client) ListAllParcels(shippoSubAccountID string) ([]*models.Parcel, error) {
-	list := []*models.Parcel{}
+	var list []*models.Parcel
 	err := c.doList(http.MethodGet, "/parcels/", nil, func(v json.RawMessage) error {
 		item := &models.Parcel{}
 		if err := json.Unmarshal(v, item); err != nil {

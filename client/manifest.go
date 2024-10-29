@@ -32,7 +32,7 @@ func (c *Client) RetrieveManifest(objectID string, shippoSubAccountID string) (*
 
 // ListAllManifests lists all manifest objects.
 func (c *Client) ListAllManifests(shippoSubAccountID string) ([]*models.Manifest, error) {
-	list := []*models.Manifest{}
+	var list []*models.Manifest
 	err := c.doList(http.MethodGet, "/manifests/", nil, func(v json.RawMessage) error {
 		item := &models.Manifest{}
 		if err := json.Unmarshal(v, item); err != nil {
