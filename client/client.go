@@ -128,7 +128,7 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 				body = string(reqBodyDebug)
 			}
 
-			c.logPrintf("Client.createRequest() HTTP request created: method=%q, url=%q, body=%q",
+			c.logPrintf("Client.createRequest() HTTP request created: method=%v, url=%v, body=%v",
 				req.Method, req.URL.String(), body)
 		}()
 	}
@@ -194,7 +194,7 @@ func (c *Client) executeRequest(req *http.Request, output interface{}) (err erro
 	}
 
 	if c.logger != nil {
-		c.logPrintf("Client.executeRequest() response: status=%q, body=%q", res.Status, string(resData))
+		c.logPrintf("Client.executeRequest() response: status=%v, body=%v", res.Status, string(resData))
 	}
 
 	if res.StatusCode >= 200 && res.StatusCode < 300 {
