@@ -13,6 +13,8 @@ var (
 	privateToken = os.Getenv("PRIVATE_TOKEN")
 )
 
+const shippoSubAccountID = ""
+
 func main() {
 	// create a Shippo Client instance
 	c := shippo.NewClient(privateToken)
@@ -29,7 +31,7 @@ func main() {
 		Email:    "shippotle@goshippo.com",
 		Validate: true,
 	}
-	address1, err := c.CreateAddress(address1Input, "")
+	address1, err := c.CreateAddress(address1Input, shippoSubAccountID)
 	if err != nil {
 		panic(err)
 	}
@@ -46,7 +48,7 @@ func main() {
 		Email:    "mrhippo@goshippo.com",
 		Validate: true,
 	}
-	address2, err := c.CreateAddress(address2Input, "")
+	address2, err := c.CreateAddress(address2Input, shippoSubAccountID)
 	if err != nil {
 		panic(err)
 	}
