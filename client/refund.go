@@ -22,7 +22,7 @@ func (c *Client) CreateRefund(input *models.RefundInput, shippoSubAccountID stri
 // RetrieveRefund retrieves an existing refund by object id.
 func (c *Client) RetrieveRefund(objectID string, shippoSubAccountID string) (*models.Refund, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.Refund{}

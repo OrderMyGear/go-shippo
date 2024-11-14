@@ -33,7 +33,7 @@ func (c *Client) RegisterCarrierAccount(input *models.CarrierAccountInput, shipp
 // RetrieveCarrierAccount retrieves an existing carrier account by object id.
 func (c *Client) RetrieveCarrierAccount(objectID string, shippoSubAccountID string) (*models.CarrierAccount, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.CarrierAccount{}
@@ -60,7 +60,7 @@ func (c *Client) ListAllCarrierAccounts(shippoSubAccountID string) ([]*models.Ca
 // AccountID and Carrier cannot be updated because they form the unique identifier together.
 func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAccountInput, shippoSubAccountID string) (*models.CarrierAccount, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 	if input == nil {
 		return nil, errors.New("nil input")
@@ -73,7 +73,7 @@ func (c *Client) UpdateCarrierAccount(objectID string, input *models.CarrierAcco
 
 func (c *Client) ConnectCarrierAccount(objectID, redirectUrl, state string, shippoSubAccountID string) (string, error) {
 	if objectID == "" {
-		return "", errors.New("Empty object ID")
+		return "", errors.New("empty object ID")
 	}
 
 	url := fmt.Sprintf("/carrier_accounts/%s/signin/initiate?redirect_uri=%s&state=%s&redirect=false", objectID, redirectUrl, state)

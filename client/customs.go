@@ -22,7 +22,7 @@ func (c *Client) CreateCustomsItem(input *models.CustomsItemInput, shippoSubAcco
 // RetrieveCustomsItem retrieves an existing customs item by object id.
 func (c *Client) RetrieveCustomsItem(objectID string, shippoSubAccountID string) (*models.CustomsItem, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.CustomsItem{}
@@ -65,7 +65,7 @@ func (c *Client) CreateCustomsDeclaration(input *models.CustomsDeclarationInput,
 // RetrieveCustomsDeclaration retrieves an existing customs declaration by object id.
 func (c *Client) RetrieveCustomsDeclaration(objectID string, shippoSubAccountID string) (*models.CustomsDeclaration, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.CustomsDeclaration{}

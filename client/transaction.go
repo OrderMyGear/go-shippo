@@ -22,7 +22,7 @@ func (c *Client) PurchaseShippingLabel(input *models.TransactionInput, shippoSub
 // RetrieveTransaction retrieves an existing transaction by object id.
 func (c *Client) RetrieveTransaction(objectID string, shippoSubAccountID string) (*models.Transaction, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.Transaction{}

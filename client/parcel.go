@@ -22,7 +22,7 @@ func (c *Client) CreateParcel(input *models.ParcelInput, shippoSubAccountID stri
 // RetrieveParcel retrieves an existing parcel by object id.
 func (c *Client) RetrieveParcel(objectID string, shippoSubAccountID string) (*models.Parcel, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.Parcel{}

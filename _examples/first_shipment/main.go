@@ -14,7 +14,7 @@ import (
 func main() {
 	privateToken := os.Getenv("PRIVATE_TOKEN")
 	if privateToken == "" {
-		panic(errors.New("Please set $PRIVATE_TOKEN with your Shippo API private token."))
+		panic(errors.New("please set $PRIVATE_TOKEN with your Shippo API private token"))
 	}
 
 	// create a Shippo Client instance

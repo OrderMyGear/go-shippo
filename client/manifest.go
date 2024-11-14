@@ -22,7 +22,7 @@ func (c *Client) CreateManifest(input *models.ManifestInput, shippoSubAccountID 
 // RetrieveManifest retrieves an existing manifest by object id.
 func (c *Client) RetrieveManifest(objectID string, shippoSubAccountID string) (*models.Manifest, error) {
 	if objectID == "" {
-		return nil, errors.New("Empty object ID")
+		return nil, errors.New("empty object ID")
 	}
 
 	output := &models.Manifest{}
