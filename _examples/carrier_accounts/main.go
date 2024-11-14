@@ -35,7 +35,7 @@ func main() {
 
 func prepareCarrierAccount(c *client.Client) string {
 	// list all registered carrier account
-	allCarrierAccounts, err := c.ListAllCarrierAccounts("")
+	allCarrierAccounts, err := c.ListAllCarrierAccounts(shippoSubAccountID)
 	if err != nil {
 		panic(err)
 	}
