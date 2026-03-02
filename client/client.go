@@ -69,6 +69,36 @@ func (c *Client) _do(baseUrl, method, path string, input, output interface{}, he
 	return nil
 }
 
+func (c *Client) doRaw(method, path string, body io.Reader, contentType string, output interface{}, headers map[string]string) error {
+	url := shippoAPIBaseURL + path
+
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return fmt.Errorf("Error creating HTTP request: %s", err.Error())
+	}
+
+	req.Header.Set("Content-Type", contentType)
+	req.Header.Set("Authorization", "ShippoToken "+c.privateToken)
+	if c.apiVersion != "" {
+		req.Header.Set("Shippo-API-Version", c.apiVersion)
+	}
+	req.Header.Set("Connection", "close")
+	req.Close = true
+
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
+	if err := c.executeRequest(req, output); err != nil {
+		if aerr, ok := err.(*errors.APIError); ok {
+			return aerr
+		}
+		return fmt.Errorf("Error executing request: %s", err.Error())
+	}
+
+	return nil
+}
+
 func (c *Client) doList(method, path string, input interface{}, outputCallback listOutputCallback, headers map[string]string) error {
 	nextURL := shippoAPIBaseURL + path + "?results=25"
 
@@ -161,11 +191,8 @@ func (c *Client) createRequest(method, url string, bodyObject interface{}, heade
 	req.Header.Set("Connection", "close")
 	req.Close = true
 
-	// add any passed in headers
-	if headers != nil {
-		for k, v := range headers {
-			req.Header.Set(k, v)
-		}
+	for k, v := range headers {
+		req.Header.Set(k, v)
 	}
 
 	return req, nil
