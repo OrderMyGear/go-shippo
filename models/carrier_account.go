@@ -1,5 +1,7 @@
 package models
 
+import "io"
+
 // See https://goshippo.com/docs/reference#carrier-accounts
 type CarrierAccountInput struct {
 	Carrier    string                 `json:"carrier"`
@@ -27,4 +29,10 @@ type Authentication struct {
 
 type ConnectOauth struct {
 	RedirectUri string `json:"redirect_uri"`
+}
+
+type CarrierAccountDocumentInput struct {
+	DocumentType string
+	Filename     string
+	File         io.Reader
 }
